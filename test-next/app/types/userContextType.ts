@@ -1,8 +1,8 @@
-import { AuthUser } from "../model/user";
+import { UserResponse } from "../response/userResponse";
 
 export interface UserContextType{
-  user: AuthUser | null;
-  setUser: (user: AuthUser | null) => void;
+  user: UserResponse | null;
+  setUser: (user: UserResponse | null) => void;
   logout: () => void;
 }
 

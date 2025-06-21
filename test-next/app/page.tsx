@@ -1,25 +1,23 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField, Typography, Paper, SnackbarCloseReason, Snackbar, IconButton } from '@mui/material';
+import { Box, Button, TextField, Typography, Paper, SnackbarCloseReason, Snackbar } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginFormInput } from './types/loginTypes';
 import { loginValidationSchemas } from './schemas/loginSchema';
 import { useApiRequest } from './hooks/useApiRequest';
-import { UserResponse } from './response/userResponse';
+import { UserToken } from './response/userResponse';
 import { useRouter } from 'next/navigation';
-import Slide, { SlideProps } from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
 import { useUser } from './context/userContext';
+import { loginUser } from './services/authService';
 
 
 export default function Home() {
 
 
   const router = useRouter();
-  const {sendRequest, data, error, loading} = useApiRequest<UserResponse[]>();
-  const [loginError, setLoginError] = useState<string | null>(null);
+  const {sendRequest, data, error, loading} = useApiRequest<UserToken>();
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const {setUser} = useUser();
   const {
@@ -29,7 +27,6 @@ export default function Home() {
   } = useForm<loginFormInput>({
     resolver: yupResolver(loginValidationSchemas)
   });
-
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -42,26 +39,12 @@ export default function Home() {
   };
 
   const onSubmit: SubmitHandler<loginFormInput> = async (form: loginFormInput) => {
-    console.log('Logging in with:', form);
-    const res = await sendRequest({
-      method: 'GET',
-      url: 'https://fakestoreapi.com/users'
-    })
-    if(res){
-      const users = res.data as UserResponse[];
-      const foundUser = res.data.find(
-        (user) => user.username === form.username && user.password === form.password
-      )
+    const user = await loginUser(form, sendRequest);
+    if(user){
+      setUser(user);
+      router.push('/main')
+      localStorage.setItem('loginSuccess', 'true');
       
-      if(foundUser){
-        console.log("users: ", foundUser)
-        router.push('/main')
-        localStorage.setItem('loginSuccess', 'true');
-        setUser(foundUser);
-        
-      }else{
-        setLoginError("Wrong credentials");
-      }
     }
   };
 
@@ -108,9 +91,9 @@ export default function Home() {
             helperText={errors.password?.message}
           />
 
-          {(error || loginError) && (
+          {(error) && (
             <Typography color="error" sx={{ mt: 1 }}>
-              {error || loginError}
+              {error}
             </Typography>
           )}
 

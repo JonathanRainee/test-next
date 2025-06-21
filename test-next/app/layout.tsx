@@ -2,6 +2,10 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { UserProvider } from './context/userContext'
+import { ThemeProvider } from '@emotion/react'
+import theme from './theme/theme'
+import { CssBaseline } from '@mui/material'
+import ClientLayout from './layout/clientLayout'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <UserProvider>{children}</UserProvider>
+        {/* <ThemeProvider theme={theme}>
+          <CssBaseline/>
+          <UserProvider>{children}</UserProvider>
+        </ThemeProvider> */}
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   )

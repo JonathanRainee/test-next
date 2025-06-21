@@ -19,7 +19,7 @@ export function useApiRequest<TResponse = unknown, TRequest = unknown>(){
       return response;
     } catch (error) {
       if(axios.isAxiosError(error)){
-        setError(error.response?.data?.message || error.message || "API error");
+        setError(error.response?.data || error.message || "API error");
       }else{
         setError("An unknown error occured while sending request")
       }

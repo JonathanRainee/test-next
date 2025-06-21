@@ -2,13 +2,13 @@
 
 import { createContext, ReactNode, useContext, useState } from "react";
 import { UserContextType } from "../types/userContextType";
-import { AuthUser } from "../model/user";
 import { useRouter } from "next/navigation";
+import { UserResponse } from "../response/userResponse";
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({children}: {children: ReactNode}) => {
-  const [user, setUser] = useState<AuthUser | null>(null)
+  const [user, setUser] = useState<UserResponse | null>(null)
   const router = useRouter();
 
   const logout = () => {
