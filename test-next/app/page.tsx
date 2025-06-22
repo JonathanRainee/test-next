@@ -1,16 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField, Typography, Paper, SnackbarCloseReason, Snackbar } from '@mui/material';
+import { Box, Button, TextField, Typography, Paper, SnackbarCloseReason } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginFormInput } from './types/loginTypes';
 import { loginValidationSchemas } from './schemas/loginSchema';
 import { useApiRequest } from './hooks/useApiRequest';
-import { UserToken } from './response/userResponse';
+import { UserToken } from './types/authType';
 import { useRouter } from 'next/navigation';
-import { useUser } from './context/userContext';
+import { useUserContext } from './context/userContext';
 import { loginUser } from './services/authService';
+import Snackbar from './components/snackbar';
 
 
 export default function Home() {
@@ -19,24 +20,10 @@ export default function Home() {
   const router = useRouter();
   const {sendRequest, data, error, loading} = useApiRequest<UserToken>();
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
-  const {setUser} = useUser();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<loginFormInput>({
+  const {setUser} = useUserContext();
+  const { register, handleSubmit, formState: { errors,isSubmitting }} = useForm<loginFormInput>({
     resolver: yupResolver(loginValidationSchemas)
   });
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenSnackbar(false);
-  };
 
   const onSubmit: SubmitHandler<loginFormInput> = async (form: loginFormInput) => {
     const user = await loginUser(form, sendRequest);
@@ -44,7 +31,6 @@ export default function Home() {
       setUser(user);
       router.push('/main')
       localStorage.setItem('loginSuccess', 'true');
-      
     }
   };
 
@@ -79,6 +65,16 @@ export default function Home() {
             {...register('username')}
             error={!!errors.username}
             helperText={errors.username?.message}
+             sx={{
+              '& input:-webkit-autofill': {
+                WebkitBoxShadow: '0 0 0 1000px white inset',
+                WebkitTextFillColor: 'black'
+              },
+              '& input:-webkit-focused': {
+                WebkitBoxShadow: '0 0 0 1000px white inset',
+                WebkitTextFillColor: 'black'
+              }
+            }}
           />
 
           <TextField
@@ -108,14 +104,16 @@ export default function Home() {
             {isSubmitting ? 'Logging in...' : 'Login'}
           </Button>
         </form>
+
+        <Snackbar text='Logout successful!' open={openSnackbar} onClose={setOpenSnackbar}/>
         
-        <Snackbar
+        {/* <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           open={openSnackbar}
           autoHideDuration={2000}
           onClose={handleClose}
           message="Logout successful!"
-        />
+        /> */}
       </Paper>
     </Box>
   );

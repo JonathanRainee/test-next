@@ -1,11 +1,11 @@
 'use client'
 
 import { useRouter } from "next/navigation";
-import { useUser } from "../context/userContext"
+import { useUserContext } from "../context/userContext"
 import { useEffect } from "react";
 
 export default function ProtectedRoute({children}: {children: React.ReactNode}){
-  const {user} = useUser();
+  const {user} = useUserContext();
   const router = useRouter();
 
   useEffect(() => {

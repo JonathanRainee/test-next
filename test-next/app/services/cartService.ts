@@ -2,19 +2,15 @@ import { CartResponse } from "../response/cartResponse";
 import { ProductResponse } from "../response/productResponse";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 
-export async function fetchCartAndProducst(sendRequest: <T = unknown>(config: AxiosRequestConfig)=>Promise<AxiosResponse<T>|null>): Promise<[CartResponse[], ProductResponse[]]> {
-  const [cartRes, productRes] = await Promise.all([
+export async function fetchCart(sendRequest: <T = unknown>(config: AxiosRequestConfig)=>Promise<AxiosResponse<T>|null>): Promise<[CartResponse[]]> {
+  const [cartRes] = await Promise.all([
     sendRequest<CartResponse[]>({
       method:'GET',
       url: 'https://fakestoreapi.com/carts'
-    }),
-    sendRequest<ProductResponse[]>({
-      method:'GET',
-      url:'https://fakestoreapi.com/products'
     })
   ]);
 
-  return [cartRes?.data ?? [], productRes?.data ?? []];
+  return [cartRes?.data ?? []];
 }
 
 export function filterCartByProductName(

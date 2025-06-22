@@ -1,7 +1,12 @@
 import { jwtDecode } from 'jwt-decode';
-import { DecodedJWT, UserResponse, UserToken } from '../response/userResponse';
+import { UserResponse } from '../response/userResponse';
+import { DecodedJWT, UserToken } from '../types/authType';
 import { loginFormInput } from '../types/loginTypes';
 import { AxiosRequestConfig } from 'axios';
+import Cookies from 'js-cookie';
+import { useUserContext } from '../context/userContext';
+import { useRouter } from 'next/navigation';
+
 
 export async function loginUser(
   form: loginFormInput,
@@ -18,14 +23,22 @@ export async function loginUser(
   try {
     const token = response.data.token;
     const decoded = jwtDecode<DecodedJWT>(token);
-
-    return {
+    const user: UserResponse = {
       id: Number(decoded.sub),
       username: decoded.user,
       iat: Number(decoded.iat),
-    } as UserResponse;
+    }
+
+    Cookies.set('user', JSON.stringify(user), {expires: 1});
+    return user
   } catch (error) {
     console.error("Failed to decode JWT", error);
     return null;
   }
+}
+
+export async function logout() {
+  Cookies.remove('user');
+  localStorage.removeItem("loginSuccess");
+  localStorage.setItem('logoutSuccess', 'true');
 }
