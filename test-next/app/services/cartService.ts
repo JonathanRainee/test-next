@@ -6,6 +6,7 @@ export async function fetchCart(sendRequest: <T = unknown>(config: AxiosRequestC
   const [cartRes] = await Promise.all([
     sendRequest<CartResponse[]>({
       method:'GET',
+      //should be in .env, put it here for easier access
       url: 'https://fakestoreapi.com/carts'
     })
   ]);

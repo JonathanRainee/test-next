@@ -5,6 +5,7 @@ export async function fetchProducts(sendRequest: <T = unknown>(config: AxiosRequ
   const [productRes] = await Promise.all([
     sendRequest<ProductResponse[]>({
       method:'GET',
+      //should be in .env, put it here for easier access
       url:'https://fakestoreapi.com/products'
     })
   ]);

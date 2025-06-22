@@ -14,6 +14,7 @@ export async function loginUser(
 ): Promise<UserResponse | null> {
   const response = await sendRequest({
     method: 'POST',
+    //should be in .env, put it here for easier access
     url: 'https://fakestoreapi.com/auth/login',
     data: form,
   });
