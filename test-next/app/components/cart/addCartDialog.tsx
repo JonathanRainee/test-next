@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Typography,
-  TextField,
-  MenuItem,
-  List,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, TextField, MenuItem, List} from '@mui/material';
 import { getProductDetail } from '@/app/services/cartService';
 import Productcard from '../product/productCard';
 import { AddCartDialogProps } from '@/app/types/addCartDialogProps';

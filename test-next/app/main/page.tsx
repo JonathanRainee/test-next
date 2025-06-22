@@ -1,18 +1,17 @@
 'use client';
 
-import { Button, Box, Typography, List, Stack, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogContent, DialogActions, ListItemAvatar, Avatar,TextField, MenuItem } from '@mui/material';
+import { Button, Box, Typography, Stack, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useUserContext } from '../context/userContext';
 import ProtectedRoute from '../components/protectedRoute';
 import { CartResponse, products } from '../response/cartResponse';
-import { fetchCart, filterCartByProductName, getProductDetail } from '../services/cartService';
+import { fetchCart, filterCartByProductName } from '../services/cartService';
 import { useApiRequest } from '../hooks/useApiRequest';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import NavBar from '../components/navbar';
 import { fetchProducts } from '../services/productService';
 import { useProductContext } from '../context/productContext';
 import { useCartContext } from '../context/cartContext';
-import Productcard from '../components/product/productCard';
 import Snackbar from '../components/snackbar';
 import CartRow from '../components/cart/cartRow';
 import CartDetailDialog from '../components/cart/cartDetailDialog';

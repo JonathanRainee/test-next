@@ -1,11 +1,9 @@
 import { jwtDecode } from 'jwt-decode';
 import { UserResponse } from '../response/userResponse';
-import { DecodedJWT, UserToken } from '../types/authType';
+import { DecodedJWT } from '../types/authType';
 import { loginFormInput } from '../types/loginTypes';
 import { AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
-import { useUserContext } from '../context/userContext';
-import { useRouter } from 'next/navigation';
 
 
 export async function loginUser(

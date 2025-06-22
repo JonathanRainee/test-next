@@ -5,11 +5,7 @@ import { AppBar, Box, Button, InputBase, Toolbar, Typography } from '@mui/materi
 import { useUserContext } from '../context/userContext';
 import { useRouter } from 'next/navigation';
 import { logout } from '../services/authService';
-
-interface NavBarProps {
-  productName: string;
-  onSearchChange: (value: string) => void;
-}
+import { NavBarProps } from '../types/navbarProps';
 
 export default function NavBar({ productName, onSearchChange }: NavBarProps) {
   const router = useRouter();

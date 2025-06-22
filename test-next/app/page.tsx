@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField, Typography, Paper, SnackbarCloseReason } from '@mui/material';
+import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginFormInput } from './types/loginTypes';
@@ -106,14 +106,6 @@ export default function Home() {
         </form>
 
         <Snackbar text='Logout successful!' open={openSnackbar} onClose={setOpenSnackbar}/>
-        
-        {/* <Snackbar
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          open={openSnackbar}
-          autoHideDuration={2000}
-          onClose={handleClose}
-          message="Logout successful!"
-        /> */}
       </Paper>
     </Box>
   );
